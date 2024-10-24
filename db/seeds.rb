@@ -7,3 +7,35 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+
+require 'faker'
+
+10.times do
+    City.create(
+      name: Faker::Address.city,
+      zip_code: Faker::Address.zip_code
+    )
+  end
+  
+  # Associer chaque utilisateur à une ville de façon aléatoire
+  cities = City.all
+  
+  10.times do
+    User.create(
+      first_name: Faker::Name.first_name,
+      last_name: Faker::Name.last_name,
+      description: Faker::Lorem.paragraph,
+      email: Faker::Internet.email,
+      age: Faker::Number.between(from: 18, to: 65),
+      city: cities.sample # Associer à une ville aléatoire
+    )
+  end
+  
+  20.times do
+    Gossip.create(
+      title: Faker::Book.title,
+      content: Faker::Lorem.paragraph,
+      user: User.order('RANDOM()').first # Associe à un utilisateur aléatoire
+    )
+  end
